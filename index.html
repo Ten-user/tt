@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>BSCBIT Y2 S2 Timetable</title>
-  <H2>Make sure to open site daily to get notifications before class</H2>
 
   <!-- React -->
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -17,7 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 min-h-screen transition">
+<body class="bg-gray-100 min-h-screen transition-colors">
   <div id="root"></div>
 
 <script type="text/babel">
@@ -47,8 +46,8 @@ const timetable = {
     { time:"14:30 - 16:30", code:"BIOP2210", course:"OOP II", venue:"MM2 | Liteboho Moloaoa", group:"B" }
   ],
   Friday: [
-    { time:"08:30 - 10:30", code:"BIOP2210", course:"OOP II", venue:"MM4 | Tsepo Mofolo", group:"ALL" },
-    { time:"10:30 - 12:30", code:"BIOP2210", course:"OOP II", venue:"MM4 | Tsepo Mofolo", group:"ALL" },
+    { time:"08:30 - 10:30", code:"BIOP2210", course:"OOP II", venue:"MM4 | Tsepo Mofolo", group:"A" },
+    { time:"10:30 - 12:30", code:"BIOP2210", course:"OOP II", venue:"MM4 | Tsepo Mofolo", group:"B" },
     { time:"12:30 - 14:30", code:"BISA2210", course:"Systems Analysis & Design", venue:"Hall 6 | New Two", group:"ALL" }
   ]
 };
@@ -60,55 +59,21 @@ function App() {
   const [dark,setDark] = React.useState(localStorage.getItem("dark")==="1");
 
   React.useEffect(()=>{
-    document.documentElement.classList.toggle("dark",dark);
-    localStorage.setItem("dark",dark?"1":"0");
+    document.body.classList.toggle("dark", dark);
+    document.body.classList.toggle("bg-gray-900", dark);
+    document.body.classList.toggle("text-gray-100", dark);
+    localStorage.setItem("dark", dark ? "1" : "0");
   },[dark]);
 
   const today = days[new Date().getDay()];
-
-  const toMinutes = t => {
-    const [h,m] = t.split(":").map(Number);
-    return h*60+m;
-  };
-
-  const scheduleReminders = () => {
-    if (!("Notification" in window)) return;
-
-    Notification.requestPermission().then(permission => {
-      if (permission !== "granted") return;
-
-      const now = new Date();
-      const currentMinutes = now.getHours()*60 + now.getMinutes();
-
-      (timetable[today] || [])
-        .filter(s => s.group==="ALL" || s.group===group)
-        .forEach(s => {
-          const start = toMinutes(s.time.split(" - ")[0]);
-          const reminderAt = start - 15;
-          const delay = (reminderAt - currentMinutes) * 60000;
-
-          const key = `${today}-${s.course}-${start}`;
-          if (delay > 0 && !localStorage.getItem(key)) {
-            setTimeout(() => {
-              new Notification("📚 Lecture Reminder", {
-                body: `${s.course} at ${s.venue}\nStarts at ${s.time.split(" - ")[0]}`,
-              });
-              localStorage.setItem(key,"1");
-            }, delay);
-          }
-        });
-    });
-  };
-
-  React.useEffect(scheduleReminders,[group]);
 
   const exportPDF = () => {
     html2pdf().from(document.getElementById("timetable")).save("BSCBIT_Y2_S2_Timetable.pdf");
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto text-gray-900 dark:text-gray-100">
-      <h1 className="text-3xl font-bold text-center mb-4">BSCBIT Y2 S2 Timetable</h1>
+    <div className="p-6 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold text-center mb-6">BSCBIT Y2 S2 Timetable</h1>
 
       <div className="flex flex-wrap justify-center gap-3 mb-6">
         <button onClick={()=>setGroup("A")} className="px-4 py-2 border rounded">Group A</button>

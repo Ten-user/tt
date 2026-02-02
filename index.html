@@ -21,12 +21,12 @@
 
 <script type="text/babel">
 const COLORS = {
-  BIDB2210: "border-blue-500 bg-blue-50 dark:bg-blue-800",
-  BIBS2210: "border-green-500 bg-green-50 dark:bg-green-800",
-  BIBI2210: "border-purple-500 bg-purple-50 dark:bg-purple-800",
-  BICC2210: "border-orange-500 bg-orange-50 dark:bg-orange-800",
-  BIOP2210: "border-pink-500 bg-pink-50 dark:bg-pink-800",
-  BISA2210: "border-yellow-500 bg-yellow-50 dark:bg-yellow-800",
+  BIDB2210: "border-blue-500",
+  BIBS2210: "border-green-500",
+  BIBI2210: "border-purple-500",
+  BICC2210: "border-orange-500",
+  BIOP2210: "border-pink-500",
+  BISA2210: "border-yellow-500",
 };
 
 const timetable = {
@@ -89,8 +89,11 @@ function App() {
             <div key={day} className={`rounded-xl shadow p-4 ${day===today?"ring-2 ring-blue-500":""} bg-white dark:bg-gray-800 transition`}>
               <h2 className="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">{day}</h2>
               {list.map((s,i)=>(
-                <div key={i} className={`border-l-4 p-3 mb-3 rounded ${COLORS[s.code]} dark:text-gray-100 transition
-                  ${i % 2 === 0 ? 'bg-white dark:bg-gray-700' : 'bg-gray-50 dark:bg-gray-800'}`}>
+                <div 
+                  key={i} 
+                  className={`border-l-4 p-3 mb-3 rounded ${COLORS[s.code]} transition
+                  ${i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'} dark:text-gray-100 hover:scale-105 transform`}
+                >
                   <p className="text-sm">{s.time}</p>
                   <p className="font-semibold">{s.course}</p>
                   <p className="text-xs">{s.venue}</p>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BSCBIT Y2 S2 Timetable</title>
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const timetable = {
+      A: {
+        Monday: [
+          { time: "08:00 - 10:00", course: "Database Systems", venue: "Lab 1" },
+          { time: "10:00 - 12:00", course: "Operating Systems", venue: "Room 204" }
+        ],
+        Tuesday: [
+          { time: "09:00 - 11:00", course: "Software Engineering", venue: "Room 101" }
+        ],
+        Wednesday: [
+          { time: "08:00 - 11:00", course: "Web Development", venue: "Lab 2" }
+        ],
+        Thursday: [
+          { time: "10:00 - 12:00", course: "Computer Networks", venue: "Room 305" }
+        ],
+        Friday: [
+          { time: "09:00 - 11:00", course: "Research Methods", venue: "Room 110" }
+        ]
+      },
+
+      B: {
+        Monday: [
+          { time: "10:00 - 12:00", course: "Database Systems", venue: "Lab 1" }
+        ],
+        Tuesday: [
+          { time: "08:00 - 10:00", course: "Operating Systems", venue: "Room 204" },
+          { time: "10:00 - 12:00", course: "Software Engineering", venue: "Room 101" }
+        ],
+        Wednesday: [
+          { time: "08:00 - 11:00", course: "Web Development", venue: "Lab 2" }
+        ],
+        Thursday: [
+          { time: "09:00 - 11:00", course: "Computer Networks", venue: "Room 305" }
+        ],
+        Friday: [
+          { time: "11:00 - 13:00", course: "Research Methods", venue: "Room 110" }
+        ]
+      }
+    };
+
+    function App() {
+      const [group, setGroup] = React.useState("A");
+
+      return (
+        <div className="p-6 max-w-5xl mx-auto">
+          <h1 className="text-3xl font-bold text-center mb-6">
+            BSCBIT Y2 S2 Timetable
+          </h1>
+
+          <div className="flex justify-center gap-4 mb-6">
+            <button
+              onClick={() => setGroup("A")}
+              className={`px-4 py-2 rounded-lg ${
+                group === "A"
+                  ? "bg-black text-white"
+                  : "bg-white border"
+              }`}
+            >
+              Group A
+            </button>
+
+            <button
+              onClick={() => setGroup("B")}
+              className={`px-4 py-2 rounded-lg ${
+                group === "B"
+                  ? "bg-black text-white"
+                  : "bg-white border"
+              }`}
+            >
+              Group B
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(timetable[group]).map(([day, sessions]) => (
+              <div key={day} className="bg-white rounded-xl shadow p-4">
+                <h2 className="font-semibold text-lg mb-3">{day}</h2>
+
+                {sessions.map((s, i) => (
+                  <div
+                    key={i}
+                    className="border rounded-lg p-3 mb-3 last:mb-0"
+                  >
+                    <p className="text-sm text-gray-500">{s.time}</p>
+                    <p className="font-semibold">{s.course}</p>
+                    <p className="text-xs text-gray-600">{s.venue}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

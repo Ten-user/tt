@@ -16,7 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors text-gray-900 dark:text-gray-100">
+<body class="bg-gray-100 min-h-screen text-gray-900">
   <div id="root"></div>
 
 <script type="text/babel">
@@ -56,13 +56,6 @@ const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Satur
 
 function App() {
   const [group,setGroup] = React.useState("A");
-  const [dark,setDark] = React.useState(localStorage.getItem("dark")==="1");
-
-  React.useEffect(()=>{
-    document.body.classList.toggle("dark", dark);
-    localStorage.setItem("dark", dark ? "1" : "0");
-  },[dark]);
-
   const today = days[new Date().getDay()];
 
   const exportPDF = () => {
@@ -71,13 +64,12 @@ function App() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-6 text-gray-900 dark:text-gray-100">BSCBIT Y2 S2 Timetable</h1>
+      <h1 className="text-4xl font-bold text-center mb-6">BSCBIT Y2 S2 Timetable</h1>
 
       <div className="flex flex-wrap justify-center gap-3 mb-6">
-        <button onClick={()=>setGroup("A")} className="px-4 py-2 border rounded bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-700 transition">Group A</button>
-        <button onClick={()=>setGroup("B")} className="px-4 py-2 border rounded bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-700 transition">Group B</button>
-        <button onClick={()=>setDark(!dark)} className="px-4 py-2 border rounded bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-700 transition">🌙 Dark</button>
-        <button onClick={exportPDF} className="px-4 py-2 border rounded bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-700 transition">📄 PDF</button>
+        <button onClick={()=>setGroup("A")} className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 transition">Group A</button>
+        <button onClick={()=>setGroup("B")} className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 transition">Group B</button>
+        <button onClick={exportPDF} className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 transition">📄 PDF</button>
       </div>
 
       <div id="timetable" className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -86,13 +78,12 @@ function App() {
           if(!list.length) return null;
 
           return (
-            <div key={day} className={`rounded-xl shadow p-4 ${day===today?"ring-2 ring-blue-500":""} bg-white dark:bg-gray-800 transition`}>
-              <h2 className="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">{day}</h2>
+            <div key={day} className={`rounded-xl shadow p-4 ${day===today?"ring-2 ring-blue-500":""} bg-white transition`}>
+              <h2 className="font-semibold text-lg mb-3">{day}</h2>
               {list.map((s,i)=>(
                 <div 
                   key={i} 
-                  className={`border-l-4 p-3 mb-3 rounded ${COLORS[s.code]} transition
-                  ${i % 2 === 0 ? 'bg-gray-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'} dark:text-gray-100 hover:scale-105 transform`}
+                  className={`border-l-4 p-3 mb-3 rounded ${COLORS[s.code]} transition ${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:scale-105 transform`}
                 >
                   <p className="text-sm">{s.time}</p>
                   <p className="font-semibold">{s.course}</p>

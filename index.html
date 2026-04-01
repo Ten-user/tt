@@ -1,104 +1,1265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BSCBIT Y2 S2 Timetable</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kabo Farming — Organic Fertilisation Logo</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --earth-dark: #1A1206;
+    --earth-deep: #2C1E0F;
+    --earth-mid: #4A3728;
+    --earth-warm: #6B4F3A;
+    --leaf-dark: #1E4D2B;
+    --leaf-mid: #2D7A3F;
+    --leaf-light: #4CAF50;
+    --leaf-bright: #7BC67E;
+    --sage: #A8C5A0;
+    --cream: #F5F0E8;
+    --sand: #E8DFD0;
+    --gold: #C8A96E;
+    --gold-light: #E0C992;
+    --off-white: #FAF8F4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--earth-dark);
+    overflow-x: hidden;
+  }
 
-  <!-- React -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--earth-dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 30% 60%, rgba(45,122,63,0.15), transparent),
+      radial-gradient(ellipse 500px 500px at 70% 30%, rgba(200,169,110,0.08), transparent);
+    pointer-events: none;
+  }
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
+  }
+  .logo-main {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+  }
+  .logo-main:hover { transform: scale(1.03); }
+  .hero-subtitle {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--sand);
+    margin-top: 36px;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 2;
+    opacity: 0.7;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: var(--earth-warm);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  /* Sections */
+  section { padding: 100px 40px; }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--leaf-mid);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--earth-dark);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--earth-warm);
+    max-width: 520px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
 
-  <!-- PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  /* Variations */
+  .variations { background: var(--cream); }
+  .variations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 60px;
+  }
+  .variation-card {
+    border-radius: 16px;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .variation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  }
+  .variation-card .card-label {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .var-dark { background: var(--earth-dark); }
+  .var-dark .card-label { color: var(--gold); }
+  .var-light { background: var(--off-white); border: 1px solid var(--sand); }
+  .var-light .card-label { color: var(--leaf-mid); }
+  .var-green { background: var(--leaf-dark); }
+  .var-green .card-label { color: var(--sage); }
+  .var-sand { background: var(--sand); }
+  .var-sand .card-label { color: var(--earth-mid); }
+
+  /* ===== 3D PACKAGING BAGS ===== */
+  .packaging { background: var(--off-white); }
+
+  .packaging-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 50px;
+    padding: 30px 0 10px;
+  }
+
+  .bag-3d-scene {
+    perspective: 1200px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .bag-3d-lift {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+  }
+  .bag-3d-lift:hover { transform: translateY(-14px); }
+  .bag-3d-lift:hover .bag-3d-shadow {
+    opacity: 0.55;
+    filter: blur(12px);
+  }
+
+  .bag-3d-wrapper {
+    transform-style: preserve-3d;
+    position: relative;
+    transition: transform 0.06s linear;
+  }
+
+  .bag-3d {
+    width: 270px;
+    height: 390px;
+    position: relative;
+    transform-style: preserve-3d;
+  }
+
+  /* Front face */
+  .bag-3d-front {
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 6px 10px 28px rgba(0,0,0,0.22), 1px 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .bag-3d-front::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .bag-3d-front::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(105deg, rgba(255,255,255,0.08) 0%, transparent 30%, transparent 75%, rgba(0,0,0,0.04) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.02) 0%, transparent 12%, transparent 88%, rgba(0,0,0,0.03) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Light bag texture override */
+  .light-bag .bag-3d-front::before {
+    opacity: 0.03;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 3px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 3px);
+  }
+
+  /* Side face */
+  .bag-3d-side {
+    position: absolute;
+    top: 0;
+    right: -46px;
+    width: 46px;
+    height: 100%;
+    transform: rotateY(90deg) translateZ(0px);
+    transform-origin: left center;
+    border-radius: 0 3px 3px 0;
+    box-shadow: 4px 6px 16px rgba(0,0,0,0.12);
+  }
+  .bag-3d-side::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.2) 2px, rgba(255,255,255,0.2) 3px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.2) 2px, rgba(255,255,255,0.2) 3px);
+  }
+  .bag-3d-side::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5%;
+    bottom: 5%;
+    width: 1px;
+    background: repeating-linear-gradient(180deg, transparent, transparent 4px, rgba(0,0,0,0.06) 4px, rgba(0,0,0,0.06) 6px);
+  }
+
+  /* Top face */
+  .bag-3d-top {
+    position: absolute;
+    top: -14px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    transform: rotateX(90deg) translateZ(0px);
+    transform-origin: bottom center;
+    border-radius: 2px 2px 0 0;
+  }
+  .bag-3d-top::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(0,0,0,0.06) 5px, rgba(0,0,0,0.06) 8px);
+  }
+
+  /* Ground shadow */
+  .bag-3d-shadow {
+    position: absolute;
+    bottom: -20px;
+    left: 3%;
+    width: 114%;
+    height: 44px;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.22) 0%, transparent 72%);
+    filter: blur(8px);
+    z-index: -1;
+    transition: all 0.5s ease;
+  }
+
+  /* Crease lines for realism */
+  .bag-crease-l, .bag-crease-r, .bag-fold-b {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .bag-crease-l {
+    top: 8%; left: 12%; width: 1px; height: 84%;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.03) 80%, transparent);
+  }
+  .bag-crease-r {
+    top: 8%; right: 12%; width: 1px; height: 84%;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.25) 20%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.25) 80%, transparent);
+  }
+  .light-bag .bag-crease-r {
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.5) 20%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.5) 80%, transparent);
+  }
+  .bag-fold-b {
+    bottom: 18%; left: 5%; right: 5%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03) 20%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.03) 80%, transparent);
+  }
+
+  /* === Bag internal content === */
+  .bag-inner {
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bag-top-seam {
+    height: 16px;
+    position: relative;
+    border-bottom: 1px solid rgba(200,169,110,0.08);
+  }
+  .dark-bag .bag-top-seam { background: linear-gradient(180deg, #0D0903, #1A1206); }
+  .bag2-theme .bag-top-seam { background: linear-gradient(180deg, #0D2A14, #143820); border-bottom-color: rgba(224,201,146,0.08); }
+  .light-bag .bag-top-seam { background: linear-gradient(180deg, #D5CFC0, #DDD4C2); border-bottom-color: rgba(0,0,0,0.06); }
+
+  .bag-top-seam::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(200,169,110,0.1) 4px, rgba(200,169,110,0.1) 8px);
+  }
+  .light-bag .bag-top-seam::after {
+    background: repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.06) 4px, rgba(0,0,0,0.06) 8px);
+  }
+
+  .bag-handles {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 26px;
+    margin-top: -10px;
+    position: relative;
+    z-index: 5;
+  }
+  .handle-cutout {
+    width: 54px;
+    height: 22px;
+    border-radius: 0 0 11px 11px;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.25);
+  }
+  .dark-bag .handle-cutout { background: #8A8070; }
+  .bag2-theme .handle-cutout { background: #7A9A7E; }
+  .light-bag .handle-cutout { background: #B0AA94; }
+
+  .bag-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 20px 8px;
+  }
+
+  .organic-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 3px;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+  }
+  .dark-bag .organic-badge {
+    background: rgba(45,122,63,0.15);
+    border: 1px solid rgba(45,122,63,0.3);
+  }
+  .dark-bag .organic-badge i, .dark-bag .organic-badge span { color: var(--leaf-bright); }
+  .bag2-theme .organic-badge {
+    background: rgba(224,201,146,0.12);
+    border: 1px solid rgba(224,201,146,0.25);
+  }
+  .bag2-theme .organic-badge i, .bag2-theme .organic-badge span { color: var(--gold-light); }
+  .light-bag .organic-badge {
+    background: rgba(30,77,43,0.08);
+    border: 1px solid rgba(30,77,43,0.15);
+  }
+  .light-bag .organic-badge i, .light-bag .organic-badge span { color: var(--leaf-dark); }
+
+  .organic-badge i { font-size: 7px; }
+  .organic-badge span {
+    font-size: 7px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .bag-logo-area { margin-bottom: 8px; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.15)); }
+
+  .product-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .dark-bag .product-name { color: var(--cream); }
+  .light-bag .product-name { color: var(--earth-dark); }
+
+  .product-subtitle {
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .dark-bag .product-subtitle { color: var(--gold); }
+  .light-bag .product-subtitle { color: var(--leaf-dark); }
+
+  .bag-divider {
+    width: 55%;
+    height: 1px;
+    margin-bottom: 12px;
+  }
+  .dark-bag .bag-divider { background: linear-gradient(90deg, transparent, rgba(200,169,110,0.25), transparent); }
+  .light-bag .bag-divider { background: linear-gradient(90deg, transparent, rgba(30,77,43,0.15), transparent); }
+
+  .npk-block {
+    display: flex;
+    gap: 0;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 4px 0;
+  }
+  .dark-bag .npk-block {
+    background: rgba(200,169,110,0.06);
+    border: 1px solid rgba(200,169,110,0.12);
+  }
+  .light-bag .npk-block {
+    background: rgba(30,77,43,0.06);
+    border: 1px solid rgba(30,77,43,0.1);
+  }
+
+  .npk-val {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3px 10px;
+  }
+  .npk-val:first-child { border-radius: 3px 0 0 3px; }
+  .npk-val:last-child { border-radius: 0 3px 3px 0; }
+  .npk-letter {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 1px;
+  }
+  .dark-bag .npk-letter { color: var(--sage); }
+  .light-bag .npk-letter { color: var(--leaf-mid); }
+  .npk-number {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .dark-bag .npk-number { color: var(--gold); }
+  .light-bag .npk-number { color: var(--leaf-dark); }
+
+  .features-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: auto;
+  }
+  .feature-tag {
+    font-size: 6.5px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .dark-bag .feature-tag {
+    color: var(--sage);
+    border: 1px solid rgba(168,197,160,0.15);
+    background: rgba(168,197,160,0.04);
+  }
+  .light-bag .feature-tag {
+    color: var(--earth-mid);
+    border: 1px solid rgba(74,55,40,0.1);
+    background: rgba(74,55,40,0.04);
+  }
+
+  .bag-bottom {
+    padding: 0 20px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .weight-display {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+  .weight-number {
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .dark-bag .weight-number { color: var(--cream); }
+  .light-bag .weight-number { color: var(--earth-dark); }
+  .weight-unit {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .dark-bag .weight-unit { color: var(--gold); }
+  .light-bag .weight-unit { color: var(--leaf-dark); }
+  .weight-label {
+    font-size: 7px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .dark-bag .weight-label { color: var(--earth-warm); }
+  .light-bag .weight-label { color: var(--earth-mid); }
+
+  .bag-info-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 6px;
+  }
+  .dark-bag .bag-info-bar { border-top: 1px solid rgba(200,169,110,0.08); }
+  .light-bag .bag-info-bar { border-top: 1px solid rgba(0,0,0,0.06); }
+
+  .bag-reg {
+    font-size: 5.5px;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+  }
+  .dark-bag .bag-reg { color: var(--earth-warm); opacity: 0.6; }
+  .light-bag .bag-reg { color: var(--earth-mid); opacity: 0.5; }
+
+  .bag-barcode { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+  .barcode-lines { display: flex; gap: 0; height: 18px; }
+  .barcode-lines span {
+    display: block;
+    width: 1.2px;
+    opacity: 0.4;
+  }
+  .dark-bag .barcode-lines span { background: var(--earth-warm); }
+  .light-bag .barcode-lines span { background: var(--earth-mid); }
+  .barcode-lines span:nth-child(3n) { width: 2px; }
+  .barcode-lines span:nth-child(5n) { width: 1px; }
+  .barcode-lines span:nth-child(7n) { width: 1.5px; }
+  .barcode-lines span:nth-child(2n+1) { height: 75%; }
+  .barcode-lines span:nth-child(4n) { height: 55%; }
+  .barcode-num {
+    font-size: 4.5px;
+    letter-spacing: 1.5px;
+    font-family: monospace;
+  }
+  .dark-bag .barcode-num { color: var(--earth-warm); opacity: 0.45; }
+  .light-bag .barcode-num { color: var(--earth-mid); opacity: 0.4; }
+
+  /* Bag theme backgrounds */
+  .bag1-front { background: linear-gradient(175deg, #241A0C 0%, #1A1206 40%, #130D04 100%); }
+  .bag1-side { background: linear-gradient(90deg, #130D04, #0D0903); }
+  .bag1-top { background: linear-gradient(180deg, #0D0903, #130D04); }
+
+  .bag2-front { background: linear-gradient(175deg, #2D5A32 0%, #1E4D2B 40%, #143820 100%); }
+  .bag2-side { background: linear-gradient(90deg, #143820, #0D2A14); }
+  .bag2-top { background: linear-gradient(180deg, #0D2A14, #143820); }
+
+  .bag3-front { background: linear-gradient(175deg, #F0EDE4 0%, #E8DFD0 40%, #DDD4C2 100%); }
+  .bag3-side { background: linear-gradient(90deg, #DDD4C2, #C8BFB0); }
+  .bag3-top { background: linear-gradient(180deg, #D5CFC0, #DDD4C2); }
+
+  /* Rotate controls */
+  .bag-rotate-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 36px;
+    background: var(--earth-dark);
+    padding: 12px 24px;
+    border-radius: 12px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid rgba(200,169,110,0.12);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .bag-rotate-controls label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .bag-rotate-controls input[type="range"] {
+    width: 140px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+  .spin-btn {
+    padding: 6px 14px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: transparent;
+    border: 1px solid rgba(200,169,110,0.25);
+    color: var(--gold);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .spin-btn:hover { background: rgba(200,169,110,0.1); border-color: var(--gold); }
+  .spin-btn.active { background: rgba(200,169,110,0.15); border-color: var(--gold); }
+  .spin-btn i { font-size: 10px; }
+
+  /* Palette */
+  .palette-section { background: var(--cream); }
+  .palette-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .palette-swatch {
+    flex: 1;
+    min-width: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .palette-swatch:hover { transform: translateY(-4px); }
+  .swatch-color { height: 100px; }
+  .swatch-info { background: white; padding: 12px 16px; }
+  .swatch-name { font-size: 12px; font-weight: 600; color: var(--earth-dark); }
+  .swatch-hex { font-size: 11px; color: var(--earth-warm); font-family: monospace; margin-top: 2px; }
+
+  /* Typography */
+  .typography { background: var(--off-white); }
+  .type-samples { margin-top: 48px; display: flex; flex-direction: column; gap: 32px; }
+  .type-sample {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--sand);
+  }
+  .type-sample:last-child { border-bottom: none; }
+  .type-meta { min-width: 140px; flex-shrink: 0; }
+  .type-meta-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--leaf-mid); font-weight: 600; }
+  .type-meta-detail { font-size: 12px; color: var(--earth-warm); margin-top: 4px; font-weight: 300; }
+  .type-preview { flex: 1; }
+  .type-preview .display { font-family: 'DM Serif Display', serif; color: var(--earth-dark); line-height: 1.1; }
+  .type-preview .sans { font-family: 'DM Sans', sans-serif; color: var(--earth-dark); line-height: 1.4; }
+
+  /* Rules */
+  .rules { background: var(--earth-dark); color: var(--cream); }
+  .rules .section-label { color: var(--gold); }
+  .rules .section-title { color: var(--cream); }
+  .rules .section-desc { color: var(--earth-warm); opacity: 0.7; }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .rule-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 28px;
+    transition: background 0.3s ease;
+  }
+  .rule-card:hover { background: rgba(255,255,255,0.07); }
+  .rule-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(200,169,110,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .rule-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--cream); }
+  .rule-text { font-size: 13px; color: var(--earth-warm); line-height: 1.6; font-weight: 300; opacity: 0.8; }
+
+  /* Footer */
+  footer { background: #0F0B04; padding: 48px 40px; text-align: center; }
+  footer p { font-size: 12px; color: var(--earth-warm); letter-spacing: 2px; font-weight: 300; }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Particles */
+  .particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 1; }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    50% { transform: translate(var(--dx), var(--dy)) scale(var(--s)); }
+  }
+
+  /* Download button */
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 48px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--leaf-mid), var(--leaf-dark));
+    color: var(--cream);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+  }
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(45,122,63,0.3);
+  }
+
+  @media (max-width: 900px) {
+    .packaging-showcase { gap: 40px; }
+    .bag-3d-scene:nth-child(2) { margin-bottom: 0; }
+  }
+  @media (max-width: 640px) {
+    section { padding: 60px 20px; }
+    .packaging-showcase { gap: 50px; }
+    .bag-3d { width: 240px; height: 350px; }
+    .product-name { font-size: 17px; }
+    .weight-number { font-size: 32px; }
+    .variations-grid { grid-template-columns: 1fr; }
+    .bag-rotate-controls { padding: 10px 16px; gap: 10px; }
+    .bag-rotate-controls input[type="range"] { width: 100px; }
+  }
+</style>
 </head>
+<body>
 
-<body class="bg-gray-100 min-h-screen text-gray-900">
-  <div id="root"></div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-grain"></div>
+  <div id="particles"></div>
+  <p class="hero-label">Brand Identity</p>
+  <div class="logo-main" id="logoMain">
+    <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="140" r="136" stroke="#C8A96E" stroke-width="1" opacity="0.3"/>
+      <circle cx="140" cy="140" r="128" stroke="#C8A96E" stroke-width="0.5" opacity="0.15"/>
+      <circle cx="140" cy="140" r="120" fill="#1A1206"/>
+      <circle cx="140" cy="140" r="120" fill="url(#earthGrad)" opacity="0.6"/>
+      <circle cx="140" cy="140" r="118" stroke="#C8A96E" stroke-width="0.5" opacity="0.2"/>
+      <path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="url(#leafGrad)" opacity="0.9"/>
+      <path d="M140 78 L140 182" stroke="#1A1206" stroke-width="2" opacity="0.35"/>
+      <path d="M140 100 L118 120" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+      <path d="M140 100 L162 120" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+      <path d="M140 125 L112 148" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+      <path d="M140 125 L168 148" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+      <path d="M140 150 L118 168" stroke="#1A1206" stroke-width="1" opacity="0.15"/>
+      <path d="M140 150 L162 168" stroke="#1A1206" stroke-width="1" opacity="0.15"/>
+      <ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.6" transform="rotate(-15 140 128)"/>
+      <path d="M140 140 C140 140, 132 155, 128 168" stroke="#7BC67E" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <path d="M128 160 C122 154, 118 156, 120 162 C122 166, 128 164, 128 160Z" fill="#4CAF50" opacity="0.7"/>
+      <path d="M132 166 C136 160, 140 162, 138 167 C136 170, 132 169, 132 166Z" fill="#7BC67E" opacity="0.6"/>
+      <defs>
+        <path id="topArc" d="M 58 140 A 82 82 0 0 1 222 140"/>
+        <path id="bottomArc" d="M 62 155 A 82 82 0 0 0 218 155"/>
+        <linearGradient id="leafGrad" x1="90" y1="62" x2="190" y2="192" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#4CAF50"/>
+          <stop offset="50%" stop-color="#2D7A3F"/>
+          <stop offset="100%" stop-color="#1E4D2B"/>
+        </linearGradient>
+        <linearGradient id="earthGrad" x1="20" y1="20" x2="260" y2="260" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#2C1E0F"/>
+          <stop offset="100%" stop-color="#0F0B04"/>
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#C8A96E"/>
+          <stop offset="100%" stop-color="#E0C992"/>
+        </linearGradient>
+      </defs>
+      <text fill="url(#goldGrad)" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12" font-weight="400">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle">KABO</textPath>
+      </text>
+      <text fill="#A8C5A0" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6" font-weight="400">
+        <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">FARMING</textPath>
+      </text>
+      <circle cx="72" cy="108" r="2" fill="#C8A96E" opacity="0.4"/>
+      <circle cx="208" cy="108" r="2" fill="#C8A96E" opacity="0.4"/>
+      <circle cx="68" cy="175" r="1.5" fill="#A8C5A0" opacity="0.3"/>
+      <circle cx="212" cy="175" r="1.5" fill="#A8C5A0" opacity="0.3"/>
+    </svg>
+  </div>
+  <p class="hero-subtitle">Organic Fertilisation</p>
+  <div class="scroll-hint">
+    <span>Explore</span>
+    <i class="fas fa-chevron-down" style="font-size:10px;"></i>
+  </div>
+</section>
 
-<script type="text/babel">
-const COLORS = {
-  BIDB2210: "border-blue-500",
-  BIBS2210: "border-green-500",
-  BIBI2210: "border-purple-500",
-  BICC2210: "border-orange-500",
-  BIOP2210: "border-pink-500",
-  BISA2210: "border-yellow-500",
-};
+<!-- LOGO VARIATIONS -->
+<section class="variations">
+  <div class="reveal">
+    <p class="section-label">Variations</p>
+    <h2 class="section-title">Adaptable Across Mediums</h2>
+    <p class="section-desc">The logo is designed to work seamlessly on dark, light, and coloured backgrounds — from woven sacks to digital screens.</p>
+  </div>
+  <div class="variations-grid">
+    <div class="variation-card var-dark reveal">
+      <span class="card-label">On Dark</span>
+      <svg width="160" height="160" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#1A1206"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="url(#lv1)" opacity="0.9"/><path d="M140 78 L140 182" stroke="#1A1206" stroke-width="2" opacity="0.35"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.6" transform="rotate(-15 140 128)"/><defs><linearGradient id="lv1" x1="90" y1="62" x2="190" y2="192" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4CAF50"/><stop offset="100%" stop-color="#1E4D2B"/></linearGradient><path id="va1" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="va1b" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#C8A96E" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#va1" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#A8C5A0" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#va1b" startOffset="50%" text-anchor="middle">FARMING</textPath></text></svg>
+    </div>
+    <div class="variation-card var-light reveal">
+      <span class="card-label">On Light</span>
+      <svg width="160" height="160" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#FAF8F4" stroke="#E8DFD0" stroke-width="1"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="#2D7A3F" opacity="0.85"/><path d="M140 78 L140 182" stroke="#FAF8F4" stroke-width="2" opacity="0.3"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.7" transform="rotate(-15 140 128)"/><defs><path id="va2" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="va2b" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#2C1E0F" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#va2" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#4A3728" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#va2b" startOffset="50%" text-anchor="middle">FARMING</textPath></text></svg>
+    </div>
+    <div class="variation-card var-green reveal">
+      <span class="card-label">On Green</span>
+      <svg width="160" height="160" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#1E4D2B"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="none" stroke="#E0C992" stroke-width="1.5" opacity="0.6"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#E0C992" opacity="0.5" transform="rotate(-15 140 128)"/><defs><path id="va3" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="va3b" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#E0C992" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#va3" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#A8C5A0" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#va3b" startOffset="50%" text-anchor="middle">FARMING</textPath></text></svg>
+    </div>
+    <div class="variation-card var-sand reveal">
+      <span class="card-label">On Kraft</span>
+      <svg width="160" height="160" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#E8DFD0"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="#1E4D2B" opacity="0.8"/><path d="M140 78 L140 182" stroke="#E8DFD0" stroke-width="2" opacity="0.3"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.7" transform="rotate(-15 140 128)"/><defs><path id="va4" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="va4b" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#1A1206" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#va4" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#2C1E0F" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#va4b" startOffset="50%" text-anchor="middle">FARMING</textPath></text></svg>
+    </div>
+  </div>
+</section>
 
-const timetable = {
-  Monday: [
-    { time:"12:30 - 14:30", code:"BIDB2210", course:"Database System", venue:"MM7 | New One", group:"A" },
-    { time:"14:30 - 16:30", code:"BIDB2210", course:"Database System", venue:"MM7 | New One", group:"B" }
-  ],
-  Tuesday: [
-    { time:"08:30 - 10:30", code:"BIBS2210", course:"Business Statistics", venue:"Room 1 | Nthatisi Monakalali", group:"ALL" },
-    { time:"14:30 - 16:30", code:"BIBI2210", course:"Business Information Systems", venue:"Hall 6 | Uduak Inno Ebioh", group:"ALL" }
-  ],
-  Wednesday: [],
-  Thursday: [
-    { time:"08:30 - 10:30", code:"BICC2210", course:"Cloud Computing", venue:"MM7 | Mantsebo Molapo", group:"A" },
-    { time:"10:30 - 12:30", code:"BICC2210", course:"Cloud Computing", venue:"MM7 | Mantsebo Molapo", group:"B" },
-    { time:"12:30 - 14:30", code:"BIOP2210", course:"OOP II", venue:"MM2 | Liteboho Moloaoa", group:"A" },
-    { time:"14:30 - 16:30", code:"BIOP2210", course:"OOP II", venue:"MM2 | Liteboho Moloaoa", group:"B" }
-  ],
-  Friday: [
-    { time:"08:30 - 10:30", code:"BIOP2210", course:"OOP II", venue:"MM4 | Tsepo Mofolo", group:"A" },
-    { time:"10:30 - 12:30", code:"BIOP2210", course:"OOP II", venue:"MM4 | Tsepo Mofolo", group:"B" },
-    { time:"12:30 - 14:30", code:"BISA2210", course:"Systems Analysis & Design", venue:"Hall 6 | New Two", group:"ALL" }
-  ]
-};
+<!-- 3D PACKAGING MOCKUPS -->
+<section class="packaging">
+  <div class="reveal">
+    <p class="section-label">Packaging</p>
+    <h2 class="section-title">Ready for the Shelf</h2>
+    <p class="section-desc">Applied across three product lines — each bag tells a story of soil, growth, and organic integrity.</p>
+  </div>
 
-const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  <div class="packaging-showcase">
 
-function App() {
-  const [group,setGroup] = React.useState("A");
-  const today = days[new Date().getDay()];
-
-  const exportPDF = () => {
-    html2pdf().from(document.getElementById("timetable")).save("BSCBIT_Y2_S2_Timetable.pdf");
-  };
-
-  return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-6">BSCBIT Y2 S2 Timetable</h1>
-
-      <div className="flex flex-wrap justify-center gap-3 mb-6">
-        <button onClick={()=>setGroup("A")} className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 transition">Group A</button>
-        <button onClick={()=>setGroup("B")} className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 transition">Group B</button>
-        <button onClick={exportPDF} className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 transition">📄 PDF</button>
-      </div>
-
-      <div id="timetable" className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Object.entries(timetable).map(([day,sessions])=>{
-          const list = sessions.filter(s=>s.group==="ALL"||s.group===group);
-          if(!list.length) return null;
-
-          return (
-            <div key={day} className={`rounded-xl shadow p-4 ${day===today?"ring-2 ring-blue-500":""} bg-white transition`}>
-              <h2 className="font-semibold text-lg mb-3">{day}</h2>
-              {list.map((s,i)=>(
-                <div 
-                  key={i} 
-                  className={`border-l-4 p-3 mb-3 rounded ${COLORS[s.code]} transition ${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:scale-105 transform`}
-                >
-                  <p className="text-sm">{s.time}</p>
-                  <p className="font-semibold">{s.course}</p>
-                  <p className="text-xs">{s.venue}</p>
+    <!-- BAG 1: Premium Organic Compost Blend (Dark) -->
+    <div class="bag-3d-scene">
+      <div class="bag-3d-lift">
+        <div class="bag-3d-wrapper dark-bag">
+          <div class="bag-3d-shadow"></div>
+          <div class="bag-3d">
+            <div class="bag-3d-side bag1-side"></div>
+            <div class="bag-3d-top bag1-top"></div>
+            <div class="bag-3d-front bag1-front">
+              <div class="bag-crease-l"></div>
+              <div class="bag-crease-r"></div>
+              <div class="bag-fold-b"></div>
+              <div class="bag-inner">
+                <div class="bag-top-seam"></div>
+                <div class="bag-handles"><div class="handle-cutout"></div><div class="handle-cutout"></div></div>
+                <div class="bag-main">
+                  <div class="organic-badge"><i class="fas fa-leaf"></i><span>Certified Organic</span></div>
+                  <div class="bag-logo-area">
+                    <svg width="105" height="105" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#1A1206"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="url(#blg1)" opacity="0.9"/><path d="M140 78 L140 182" stroke="#1A1206" stroke-width="2" opacity="0.35"/><path d="M140 100 L118 120" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/><path d="M140 100 L162 120" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/><path d="M140 125 L112 148" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/><path d="M140 125 L168 148" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.6" transform="rotate(-15 140 128)"/><path d="M140 140 C140 140, 132 155, 128 168" stroke="#7BC67E" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/><path d="M128 160 C122 154, 118 156, 120 162 C122 166, 128 164, 128 160Z" fill="#4CAF50" opacity="0.7"/><defs><linearGradient id="blg1" x1="90" y1="62" x2="190" y2="192" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4CAF50"/><stop offset="50%" stop-color="#2D7A3F"/><stop offset="100%" stop-color="#1E4D2B"/></linearGradient><path id="bt1" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="bb1" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#C8A96E" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#bt1" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#A8C5A0" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#bb1" startOffset="50%" text-anchor="middle">FARMING</textPath></text><circle cx="140" cy="140" r="118" stroke="#C8A96E" stroke-width="0.5" opacity="0.2"/></svg>
+                  </div>
+                  <p class="product-name">Premium Organic<br>Compost Blend</p>
+                  <p class="product-subtitle">Slow-Release Fertiliser</p>
+                  <div class="bag-divider"></div>
+                  <div class="npk-block">
+                    <div class="npk-val"><span class="npk-letter">N</span><span class="npk-number">5</span></div>
+                    <div class="npk-val"><span class="npk-letter">P</span><span class="npk-number">3</span></div>
+                    <div class="npk-val"><span class="npk-letter">K</span><span class="npk-number">4</span></div>
+                  </div>
+                  <div class="features-row">
+                    <span class="feature-tag">Soil Builder</span>
+                    <span class="feature-tag">Humic Acid</span>
+                    <span class="feature-tag">Microbe Rich</span>
+                    <span class="feature-tag">Peat Free</span>
+                  </div>
                 </div>
-              ))}
+                <div class="bag-bottom">
+                  <div class="weight-display"><span class="weight-number">25</span><span class="weight-unit">KG</span></div>
+                  <p class="weight-label">Net Weight</p>
+                  <div class="bag-info-bar">
+                    <div class="bag-reg">Reg. KF-ORG-2025/0487<br>Batch: KB2506 Mfg: Jun 2025</div>
+                    <div class="bag-barcode"><div class="barcode-lines" data-barcode></div><span class="barcode-num">6 009876 543210</span></div>
+                  </div>
+                </div>
+              </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
       </div>
     </div>
-  );
-}
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    <!-- BAG 2: Green Boost (Green) -->
+    <div class="bag-3d-scene" style="margin-bottom: 30px;">
+      <div class="bag-3d-lift">
+        <div class="bag-3d-wrapper dark-bag bag2-theme">
+          <div class="bag-3d-shadow"></div>
+          <div class="bag-3d">
+            <div class="bag-3d-side bag2-side"></div>
+            <div class="bag-3d-top bag2-top"></div>
+            <div class="bag-3d-front bag2-front">
+              <div class="bag-crease-l"></div>
+              <div class="bag-crease-r"></div>
+              <div class="bag-fold-b"></div>
+              <div class="bag-inner">
+                <div class="bag-top-seam"></div>
+                <div class="bag-handles"><div class="handle-cutout"></div><div class="handle-cutout"></div></div>
+                <div class="bag-main">
+                  <div class="organic-badge"><i class="fas fa-seedling"></i><span>Fast Acting</span></div>
+                  <div class="bag-logo-area">
+                    <svg width="105" height="105" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#1E4D2B"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="none" stroke="#E0C992" stroke-width="1.5" opacity="0.6"/><path d="M140 78 L140 182" stroke="#E0C992" stroke-width="1.5" opacity="0.2"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#E0C992" opacity="0.5" transform="rotate(-15 140 128)"/><path d="M140 140 C140 140, 132 155, 128 168" stroke="#A8C5A0" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/><path d="M128 160 C122 154, 118 156, 120 162 C122 166, 128 164, 128 160Z" fill="#A8C5A0" opacity="0.6"/><defs><path id="bt2" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="bb2" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#E0C992" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#bt2" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#A8C5A0" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#bb2" startOffset="50%" text-anchor="middle">FARMING</textPath></text><circle cx="140" cy="140" r="118" stroke="#E0C992" stroke-width="0.5" opacity="0.15"/></svg>
+                  </div>
+                  <p class="product-name">Green Boost<br>Liquid Fertiliser</p>
+                  <p class="product-subtitle">Foliar Feed Concentrate</p>
+                  <div class="bag-divider"></div>
+                  <div class="npk-block">
+                    <div class="npk-val"><span class="npk-letter">N</span><span class="npk-number">8</span></div>
+                    <div class="npk-val"><span class="npk-letter">P</span><span class="npk-number">2</span></div>
+                    <div class="npk-val"><span class="npk-letter">K</span><span class="npk-number">6</span></div>
+                  </div>
+                  <div class="features-row">
+                    <span class="feature-tag">Foliar Feed</span>
+                    <span class="feature-tag">Fast Acting</span>
+                    <span class="feature-tag">100% Organic</span>
+                  </div>
+                </div>
+                <div class="bag-bottom">
+                  <div class="weight-display"><span class="weight-number">10</span><span class="weight-unit">KG</span></div>
+                  <p class="weight-label">Net Weight</p>
+                  <div class="bag-info-bar">
+                    <div class="bag-reg">Reg. KF-GRN-2025/0193<br>Batch: KG2506 Mfg: Jun 2025</div>
+                    <div class="bag-barcode"><div class="barcode-lines" data-barcode></div><span class="barcode-num">6 009876 654321</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BAG 3: Earth Start (Light/Kraft) -->
+    <div class="bag-3d-scene">
+      <div class="bag-3d-lift">
+        <div class="bag-3d-wrapper light-bag">
+          <div class="bag-3d-shadow"></div>
+          <div class="bag-3d">
+            <div class="bag-3d-side bag3-side"></div>
+            <div class="bag-3d-top bag3-top"></div>
+            <div class="bag-3d-front bag3-front">
+              <div class="bag-crease-l"></div>
+              <div class="bag-crease-r"></div>
+              <div class="bag-fold-b"></div>
+              <div class="bag-inner">
+                <div class="bag-top-seam"></div>
+                <div class="bag-handles"><div class="handle-cutout"></div><div class="handle-cutout"></div></div>
+                <div class="bag-main">
+                  <div class="organic-badge"><i class="fas fa-leaf"></i><span>Organic Certified</span></div>
+                  <div class="bag-logo-area">
+                    <svg width="105" height="105" viewBox="0 0 280 280" fill="none"><circle cx="140" cy="140" r="120" fill="#E8DFD0"/><path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="#1E4D2B" opacity="0.8"/><path d="M140 78 L140 182" stroke="#E8DFD0" stroke-width="2" opacity="0.3"/><path d="M140 100 L118 120" stroke="#E8DFD0" stroke-width="1.2" opacity="0.18"/><path d="M140 100 L162 120" stroke="#E8DFD0" stroke-width="1.2" opacity="0.18"/><path d="M140 125 L112 148" stroke="#E8DFD0" stroke-width="1.2" opacity="0.18"/><path d="M140 125 L168 148" stroke="#E8DFD0" stroke-width="1.2" opacity="0.18"/><ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.7" transform="rotate(-15 140 128)"/><path d="M140 140 C140 140, 132 155, 128 168" stroke="#7BC67E" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.9"/><path d="M128 160 C122 154, 118 156, 120 162 C122 166, 128 164, 128 160Z" fill="#7BC67E" opacity="0.8"/><defs><path id="bt3" d="M 58 140 A 82 82 0 0 1 222 140"/><path id="bb3" d="M 62 155 A 82 82 0 0 0 218 155"/></defs><text fill="#1A1206" font-family="'DM Serif Display', serif" font-size="22" letter-spacing="12"><textPath href="#bt3" startOffset="50%" text-anchor="middle">KABO</textPath></text><text fill="#2C1E0F" font-family="'DM Sans', sans-serif" font-size="11" letter-spacing="6"><textPath href="#bb3" startOffset="50%" text-anchor="middle">FARMING</textPath></text><circle cx="140" cy="140" r="118" stroke="#1A1206" stroke-width="0.5" opacity="0.1"/></svg>
+                  </div>
+                  <p class="product-name">Earth Start<br>Seedling Mix</p>
+                  <p class="product-subtitle">Root Growth Formula</p>
+                  <div class="bag-divider"></div>
+                  <div class="npk-block">
+                    <div class="npk-val"><span class="npk-letter">N</span><span class="npk-number">3</span></div>
+                    <div class="npk-val"><span class="npk-letter">P</span><span class="npk-number">5</span></div>
+                    <div class="npk-val"><span class="npk-letter">K</span><span class="npk-number">2</span></div>
+                  </div>
+                  <div class="features-row">
+                    <span class="feature-tag">Root Growth</span>
+                    <span class="feature-tag">Peat Free</span>
+                    <span class="feature-tag">Vermicompost</span>
+                  </div>
+                </div>
+                <div class="bag-bottom">
+                  <div class="weight-display"><span class="weight-number">5</span><span class="weight-unit">KG</span></div>
+                  <p class="weight-label">Net Weight</p>
+                  <div class="bag-info-bar">
+                    <div class="bag-reg">Reg. KF-ERT-2025/0071<br>Batch: KE2506 Mfg: Jun 2025</div>
+                    <div class="bag-barcode"><div class="barcode-lines" data-barcode></div><span class="barcode-num">6 009876 765432</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Rotation Controls -->
+  <div class="bag-rotate-controls reveal">
+    <label>Rotate</label>
+    <input type="range" id="bagRotateSlider" min="-25" max="25" value="-10" step="0.5">
+    <button class="spin-btn" id="bagSpinBtn"><i class="fas fa-sync-alt"></i> Auto Spin</button>
+  </div>
+</section>
+
+<!-- COLOR PALETTE -->
+<section class="palette-section">
+  <div class="reveal">
+    <p class="section-label">Palette</p>
+    <h2 class="section-title">Colours of the Earth</h2>
+    <p class="section-desc">Every shade is rooted in the natural world — deep soils, fresh growth, and golden harvest light.</p>
+  </div>
+  <div class="palette-row reveal">
+    <div class="palette-swatch"><div class="swatch-color" style="background: #1A1206;"></div><div class="swatch-info"><p class="swatch-name">Earth Dark</p><p class="swatch-hex">#1A1206</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #4A3728;"></div><div class="swatch-info"><p class="swatch-name">Earth Mid</p><p class="swatch-hex">#4A3728</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #C8A96E;"></div><div class="swatch-info"><p class="swatch-name">Harvest Gold</p><p class="swatch-hex">#C8A96E</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #2D7A3F;"></div><div class="swatch-info"><p class="swatch-name">Leaf Green</p><p class="swatch-hex">#2D7A3F</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #7BC67E;"></div><div class="swatch-info"><p class="swatch-name">Fresh Shoot</p><p class="swatch-hex">#7BC67E</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #A8C5A0;"></div><div class="swatch-info"><p class="swatch-name">Sage</p><p class="swatch-hex">#A8C5A0</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #E8DFD0;"></div><div class="swatch-info"><p class="swatch-name">Kraft Sand</p><p class="swatch-hex">#E8DFD0</p></div></div>
+    <div class="palette-swatch"><div class="swatch-color" style="background: #F5F0E8; border: 1px solid #E8DFD0;"></div><div class="swatch-info"><p class="swatch-name">Cream</p><p class="swatch-hex">#F5F0E8</p></div></div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section class="typography">
+  <div class="reveal">
+    <p class="section-label">Typography</p>
+    <h2 class="section-title">Voice of the Brand</h2>
+    <p class="section-desc">A pairing of organic warmth (serif display) and clean utility (sans body) — just like the products themselves.</p>
+  </div>
+  <div class="type-samples reveal">
+    <div class="type-sample"><div class="type-meta"><p class="type-meta-label">Display</p><p class="type-meta-detail">DM Serif Display<br>Regular</p></div><div class="type-preview"><p class="display" style="font-size: 48px;">Kabo Farming</p></div></div>
+    <div class="type-sample"><div class="type-meta"><p class="type-meta-label">Subheading</p><p class="type-meta-detail">DM Serif Display<br>Regular · 18–24px</p></div><div class="type-preview"><p class="display" style="font-size: 22px;">Organic Fertilisation</p></div></div>
+    <div class="type-sample"><div class="type-meta"><p class="type-meta-label">Body</p><p class="type-meta-detail">DM Sans<br>Light 300 · 15px</p></div><div class="type-preview"><p class="sans" style="font-weight: 300; font-size: 15px;">Rooted in science, grown by nature. Our organic fertilisers restore soil vitality and boost crop yields without compromising the ecosystem.</p></div></div>
+    <div class="type-sample"><div class="type-meta"><p class="type-meta-label">Label / Tag</p><p class="type-meta-detail">DM Sans<br>SemiBold 600 · 10–11px<br>Uppercase · Wide tracking</p></div><div class="type-preview"><p class="sans" style="font-weight: 600; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--leaf-mid);">100% Organic Certified</p></div></div>
+    <div class="type-sample"><div class="type-meta"><p class="type-meta-label">Weight</p><p class="type-meta-detail">DM Sans<br>Bold 700 · 13–14px</p></div><div class="type-preview"><p class="sans" style="font-weight: 700; font-size: 14px;">NPK 5-3-4 &nbsp;·&nbsp; Slow Release &nbsp;·&nbsp; 25 KG</p></div></div>
+  </div>
+</section>
+
+<!-- USAGE RULES -->
+<section class="rules">
+  <div class="reveal">
+    <p class="section-label">Guidelines</p>
+    <h2 class="section-title">Usage Rules</h2>
+    <p class="section-desc">Keep the logo clean, consistent, and respectful of its organic identity.</p>
+  </div>
+  <div class="rules-grid reveal">
+    <div class="rule-card"><div class="rule-icon"><i class="fas fa-expand"></i></div><p class="rule-title">Minimum Size</p><p class="rule-text">The full emblem must not appear smaller than 24px in diameter. For small spaces, use the leaf icon alone.</p></div>
+    <div class="rule-card"><div class="rule-icon"><i class="fas fa-ban"></i></div><p class="rule-title">Clear Space</p><p class="rule-text">Maintain a clear zone equal to the radius of the inner circle on all sides. No overlapping elements.</p></div>
+    <div class="rule-card"><div class="rule-icon"><i class="fas fa-palette"></i></div><p class="rule-title">Colour Fidelity</p><p class="rule-text">Use only approved palette colours. On kraft paper, switch to the single-colour version for print clarity.</p></div>
+    <div class="rule-card"><div class="rule-icon"><i class="fas fa-crop-simple"></i></div><p class="rule-title">No Alterations</p><p class="rule-text">Do not rotate, skew, stretch, or add effects (shadows, outlines, gradients) to the logo mark.</p></div>
+    <div class="rule-card"><div class="rule-icon"><i class="fas fa-circle-half-stroke"></i></div><p class="rule-title">Background Rules</p><p class="rule-text">On dark backgrounds use the gold/sage version. On light backgrounds use the full-colour earth/green version.</p></div>
+    <div class="rule-card"><div class="rule-icon"><i class="fas fa-font"></i></div><p class="rule-title">Lock-up Only</p><p class="rule-text">The arched text "KABO" and "FARMING" must always appear together with the emblem. Never separate them.</p></div>
+  </div>
+  <div style="text-align: center; margin-top: 56px;" class="reveal">
+    <button class="download-btn" onclick="downloadSVG()"><i class="fas fa-download"></i> Download SVG Logo</button>
+  </div>
+</section>
+
+<footer>
+  <p>KABO FARMING &nbsp;&middot;&nbsp; ORGANIC FERTILISATION &nbsp;&middot;&nbsp; BRAND IDENTITY 2026(Ten Productions demo preview)</p>
+</footer>
+
+<script>
+  /* Scroll reveal */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  /* Floating particles */
+  const particleContainer = document.getElementById('particles');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced) {
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 1.5;
+      const isGold = Math.random() > 0.5;
+      p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${isGold ? '#C8A96E' : '#4CAF50'};opacity:0;--dx:${(Math.random()-0.5)*60}px;--dy:${(Math.random()-0.5)*80}px;--s:${0.5+Math.random()};animation:drift ${8+Math.random()*10}s ease-in-out ${Math.random()*6}s infinite;`;
+      particleContainer.appendChild(p);
+    }
+  }
+
+  /* Hero parallax */
+  const hero = document.getElementById('hero');
+  const logoMain = document.getElementById('logoMain');
+  if (!prefersReduced) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      logoMain.style.transform = `translate(${x * 12}px, ${y * 8}px)`;
+    });
+    hero.addEventListener('mouseleave', () => { logoMain.style.transform = 'translate(0, 0)'; });
+  }
+
+  /* Barcode generation for bag mockups */
+  document.querySelectorAll('[data-barcode]').forEach(container => {
+    for (let i = 0; i < 30; i++) {
+      const line = document.createElement('span');
+      line.style.height = (50 + Math.random() * 50) + '%';
+      container.appendChild(line);
+    }
+  });
+
+  /* 3D Bag Rotation */
+  const wrappers = document.querySelectorAll('.bag-3d-wrapper');
+  const rotateSlider = document.getElementById('bagRotateSlider');
+  const spinBtn = document.getElementById('bagSpinBtn');
+  let currentRotY = -10;
+  let autoSpinning = false;
+  let spinFrame = null;
+
+  function applyRotation() {
+    wrappers.forEach(w => {
+      w.style.transform = `rotateY(${currentRotY}deg) rotateX(2deg)`;
+    });
+  }
+
+  rotateSlider.addEventListener('input', (e) => {
+    currentRotY = parseFloat(e.target.value);
+    applyRotation();
+    if (autoSpinning) stopSpin();
+  });
+
+  function startSpin() {
+    autoSpinning = true;
+    spinBtn.classList.add('active');
+    function frame() {
+      if (!autoSpinning) return;
+      currentRotY -= 0.12;
+      if (currentRotY < -25) currentRotY = 25;
+      rotateSlider.value = currentRotY;
+      applyRotation();
+      spinFrame = requestAnimationFrame(frame);
+    }
+    spinFrame = requestAnimationFrame(frame);
+  }
+
+  function stopSpin() {
+    autoSpinning = false;
+    spinBtn.classList.remove('active');
+    if (spinFrame) cancelAnimationFrame(spinFrame);
+  }
+
+  spinBtn.addEventListener('click', () => { autoSpinning ? stopSpin() : startSpin(); });
+
+  /* Initial rotation */
+  applyRotation();
+
+  /* Download SVG */
+  function downloadSVG() {
+    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="140" cy="140" r="136" stroke="#C8A96E" stroke-width="1" opacity="0.3"/>
+  <circle cx="140" cy="140" r="128" stroke="#C8A96E" stroke-width="0.5" opacity="0.15"/>
+  <circle cx="140" cy="140" r="120" fill="#1A1206"/>
+  <defs>
+    <linearGradient id="leafGrad" x1="90" y1="62" x2="190" y2="192" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4CAF50"/><stop offset="50%" stop-color="#2D7A3F"/><stop offset="100%" stop-color="#1E4D2B"/></linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#C8A96E"/><stop offset="100%" stop-color="#E0C992"/></linearGradient>
+    <path id="topArc" d="M 58 140 A 82 82 0 0 1 222 140"/>
+    <path id="bottomArc" d="M 62 155 A 82 82 0 0 0 218 155"/>
+  </defs>
+  <path d="M140 62 C140 62, 190 95, 190 140 C190 160, 175 178, 155 186 C145 190, 140 192, 140 192 C140 192, 135 190, 125 186 C105 178, 90 160, 90 140 C90 95, 140 62, 140 62Z" fill="url(#leafGrad)" opacity="0.9"/>
+  <path d="M140 78 L140 182" stroke="#1A1206" stroke-width="2" opacity="0.35"/>
+  <path d="M140 100 L118 120" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+  <path d="M140 100 L162 120" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+  <path d="M140 125 L112 148" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+  <path d="M140 125 L168 148" stroke="#1A1206" stroke-width="1.2" opacity="0.2"/>
+  <ellipse cx="140" cy="128" rx="8" ry="12" fill="#C8A96E" opacity="0.6" transform="rotate(-15 140 128)"/>
+  <path d="M140 140 C140 140, 132 155, 128 168" stroke="#7BC67E" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <path d="M128 160 C122 154, 118 156, 120 162 C122 166, 128 164, 128 160Z" fill="#4CAF50" opacity="0.7"/>
+  <circle cx="140" cy="140" r="118" stroke="#C8A96E" stroke-width="0.5" opacity="0.2"/>
+  <text fill="url(#goldGrad)" font-family="serif" font-size="22" letter-spacing="12"><textPath href="#topArc" startOffset="50%" text-anchor="middle">KABO</textPath></text>
+  <text fill="#A8C5A0" font-family="sans-serif" font-size="11" letter-spacing="6"><textPath href="#bottomArc" startOffset="50%" text-anchor="middle">FARMING</textPath></text>
+</svg>`;
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'kabo-farming-logo.svg';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Logo SVG downloaded successfully');
+  }
+
+  function showToast(msg) {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:#1E4D2B;color:#F5F0E8;padding:12px 28px;border-radius:8px;font-size:13px;font-family:"DM Sans",sans-serif;font-weight:500;letter-spacing:0.5px;z-index:9999;opacity:0;transition:opacity 0.3s ease,transform 0.3s ease;box-shadow:0 8px 30px rgba(0,0,0,0.2);';
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => { toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)'; });
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(20px)'; setTimeout(() => toast.remove(), 300); }, 2800);
+  }
 </script>
 </body>
 </html>
